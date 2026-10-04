@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>StudentTrack • Teacher Dashboard</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--brand:#4f46e5;--brand2:#7c3aed;--green:#10b981;--yellow:#f59e0b;--red:#ef4444}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}
+.sidebar{width:245px;background:#111827;color:white;padding:22px 14px;position:fixed;inset:0 auto 0 0;z-index:10}.logo{font-size:21px;font-weight:800;padding:8px 12px 28px}.logo span{color:#818cf8}
+.navbtn{width:100%;border:0;background:transparent;color:#cbd5e1;padding:12px;border-radius:10px;text-align:left;margin:3px 0}.navbtn.active,.navbtn:hover{background:#1f2937;color:white}.navbtn b{display:inline-block;width:27px}
+.main{margin-left:245px;width:calc(100% - 245px);padding:25px;max-width:1450px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.top h1{margin:0;font-size:25px}.top p{margin:5px 0;color:var(--muted);font-size:14px}.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));color:white;display:grid;place-items:center;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 3px 15px #11182708}.statlabel{color:var(--muted);font-size:13px}.stat{font-size:28px;font-weight:800;margin:8px 0}.trend{font-size:12px;color:var(--green)}.layout{display:grid;grid-template-columns:1.35fr .65fr;gap:15px;margin-top:15px}.card h2{font-size:16px;margin:0 0 15px}.bar{height:10px;background:#eef0f5;border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:20px}.bars{display:flex;align-items:end;height:180px;gap:9px;padding-top:10px}.bars div{flex:1;background:linear-gradient(#818cf8,#4f46e5);border-radius:7px 7px 2px 2px;min-height:8px}.bars small{display:block;text-align:center;color:var(--muted);font-size:10px;margin-top:6px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}.input{border:1px solid var(--line);background:white;border-radius:10px;padding:10px 12px;min-width:180px}.primary{background:var(--brand);color:white;border:0;border-radius:10px;padding:10px 14px;font-weight:600}.secondary{background:white;border:1px solid var(--line);border-radius:10px;padding:10px 14px}.danger{color:white;background:var(--red);border:0;border-radius:8px;padding:7px 10px}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px 9px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-weight:600}.pill{display:inline-block;padding:5px 8px;border-radius:99px;font-size:11px}.green{background:#dcfce7;color:#166534}.yellow{background:#fef3c7;color:#92400e}.red{background:#fee2e2;color:#991b1b}
+.section{display:none}.section.active{display:block}.modal{position:fixed;inset:0;background:#11182799;display:none;place-items:center;padding:20px;z-index:30}.modal.show{display:grid}.modalbox{background:white;border-radius:16px;padding:20px;max-width:450px;width:100%}.modalbox input{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;margin:7px 0 12px}
+.mobiletop{display:none}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.layout{grid-template-columns:1fr}}
+@media(max-width:700px){.sidebar{display:none}.main{margin:0;width:100%;padding:15px;padding-bottom:85px}.mobiletop{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.top{display:none}.grid{grid-template-columns:repeat(2,1fr);gap:9px}.card{padding:14px;border-radius:14px}.stat{font-size:22px}.bottomnav{display:flex!important}.bars{height:145px}}
+.bottomnav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);z-index:20;padding:6px 3px calc(6px + env(safe-area-inset-bottom));justify-content:space-around}.bottomnav button{border:0;background:transparent;color:var(--muted);font-size:10px}.bottomnav button.active{color:var(--brand);font-weight:700}.bottomnav span{display:block;font-size:18px;margin-bottom:2px}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar"><div class="logo">Student<span>Track</span></div>
+<button class="navbtn active" onclick="go('dashboard',this)"><b>⌂</b> Dashboard</button>
+<button class="navbtn" onclick="go('students',this)"><b>♙</b> Оюутнууд</button>
+<button class="navbtn" onclick="go('attendance',this)"><b>✓</b> Ирц</button>
+<button class="navbtn" onclick="go('activity',this)"><b>★</b> Идэвх</button>
+<button class="navbtn" onclick="go('assignments',this)"><b>▤</b> Бие даалт</button>
+<button class="navbtn" onclick="go('reports',this)"><b>◔</b> Тайлан</button>
+</aside>
+<main class="main">
+<div class="mobiletop"><b style="font-size:20px">Student<span style="color:#4f46e5">Track</span></b><div class="avatar">О</div></div>
+<div class="top"><div><h1 id="title">Dashboard</h1><p>Оюутнуудын сургалтын явцыг нэг дороос хянах</p></div><div class="avatar">О</div></div>
+
+<section id="dashboard" class="section active">
+<div class="grid">
+<div class="card"><div class="statlabel">Нийт оюутан</div><div class="stat" id="dStudents">0</div><div class="trend">● Бүртгэлтэй</div></div>
+<div class="card"><div class="statlabel">Өнөөдрийн ирц</div><div class="stat" id="dAttendance">0%</div><div class="trend">↑ Хичээлийн явц</div></div>
+<div class="card"><div class="statlabel">Дундаж идэвх</div><div class="stat" id="dActivity">0</div><div class="trend">★ Оноо</div></div>
+<div class="card"><div class="statlabel">Бие даалт</div><div class="stat" id="dAssignments">0</div><div class="trend">● Нийт даалгавар</div></div>
+</div>
+<div class="layout">
+<div class="card"><h2>📈 Сүүлийн 7 өдрийн ирц</h2><div class="bars" id="chart"></div></div>
+<div class="card"><h2>🎯 Бие даалтын явц</h2><div style="font-size:30px;font-weight:800" id="assignPct">0%</div><p class="statlabel">Оноо бүртгэгдсэн</p><div class="bar"><i id="assignBar" style="width:0"></i></div><br><h2>⚡ Түргэн үйлдэл</h2><div class="toolbar"><button class="primary" onclick="go('attendance')">+ Ирц</button><button class="secondary" onclick="go('students')">+ Оюутан</button></div></div>
+</div>
+</section>
+
+<section id="students" class="section"><div class="card"><div class="toolbar"><input class="input" id="search" placeholder="🔎 Оюутан хайх..." oninput="renderStudents()"><button class="primary" onclick="openModal()">+ Оюутан нэмэх</button></div><div id="studentsTable"></div></div></section>
+
+<section id="attendance" class="section"><div class="card"><div class="toolbar"><input class="input" type="date" id="attDate"><input class="input" id="attLesson" placeholder="Хичээл"><button class="primary" onclick="markAll('present')">Бүгд ирсэн</button></div><div id="attTable"></div></div></section>
+
+<section id="activity" class="section"><div class="card"><div class="toolbar"><input class="input" type="date" id="actDate"><input class="input" id="actLesson" placeholder="Хичээл"></div><div id="actTable"></div></div></section>
+
+<section id="assignments" class="section"><div class="card"><div class="toolbar"><button class="primary" onclick="addAssignment()">+ Бие даалт үүсгэх</button></div><div id="asTable"></div></div></section>
+
+<section id="reports" class="section"><div class="card"><h2>📊 Нэгдсэн тайлан</h2><div id="report"></div><br><button class="primary" onclick="csv()">CSV татах</button></div></section>
+</main>
+</div>
+<div class="bottomnav" id="bottomnav">
+<button class="active" onclick="go('dashboard',this)"><span>⌂</span>Нүүр</button><button onclick="go('students',this)"><span>♙</span>Оюутан</button><button onclick="go('attendance',this)"><span>✓</span>Ирц</button><button onclick="go('activity',this)"><span>★</span>Идэвх</button><button onclick="go('assignments',this)"><span>▤</span>Даалгавар</button>
+</div>
+<div class="modal" id="modal"><div class="modalbox"><h2>Оюутан нэмэх</h2><input id="mName" placeholder="Овог нэр"><input id="mCode" placeholder="Оюутны код"><input id="mGroup" placeholder="Анги / бүлэг"><div class="toolbar"><button class="primary" onclick="addStudent()">Хадгалах</button><button class="secondary" onclick="closeModal()">Болих</button></div></div></div>
+<script>
+let db=JSON.parse(localStorage.getItem("st_modern")||'{"students":[],"attendance":[],"activity":[],"assignments":[]}');
+const today=new Date().toISOString().slice(0,10);attDate.value=today;actDate.value=today;
+function save(){localStorage.setItem("st_modern",JSON.stringify(db));renderAll()}
+function go(id,btn){document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".navbtn,.bottomnav button").forEach(x=>x.classList.remove("active"));if(btn)btn.classList.add("active");document.getElementById("title").textContent={dashboard:"Dashboard",students:"Оюутнууд",attendance:"Ирц бүртгэл",activity:"Идэвх",assignments:"Бие даалт",reports:"Тайлан"}[id];renderAll()}
+function openModal(){modal.classList.add("show")}function closeModal(){modal.classList.remove("show")}
+function addStudent(){let n=mName.value.trim();if(!n)return alert("Нэр оруулна уу.");db.students.push({id:Date.now(),name:n,code:mCode.value,group:mGroup.value});mName.value=mCode.value=mGroup.value="";closeModal();save()}
+function delStudent(id){if(confirm("Устгах уу?")){db.students=db.students.filter(x=>x.id!==id);save()}}
+function att(id,status){let date=attDate.value,lesson=attLesson.value.trim();let x=db.attendance.find(a=>a.studentId===id&&a.date===date&&a.lesson===lesson);if(x)x.status=status;else db.attendance.push({studentId:id,date,lesson,status});save()}
+function markAll(s){db.students.forEach(x=>att(x.id,s))}
+function act(id,val){let date=actDate.value,lesson=actLesson.value.trim(),x=db.activity.find(a=>a.studentId===id&&a.date===date&&a.lesson===lesson);if(x)x.points=+val;else db.activity.push({studentId:id,date,lesson,points:+val});save()}
+function addAssignment(){let title=prompt("Бие даалтын нэр:");if(!title)return;db.assignments.push({id:Date.now(),title,max:10,scores:{}});save()}
+function score(a,s,v){let x=db.assignments.find(q=>q.id===a);x.scores[s]=v===""?"":+v;save()}
+function renderStudents(){let q=(search?.value||"").toLowerCase();let arr=db.students.filter(s=>(s.name+" "+s.code+" "+s.group).toLowerCase().includes(q));studentsTable.innerHTML=arr.length?`<table><tr><th>Оюутан</th><th>Код</th><th>Бүлэг</th><th></th></tr>${arr.map(s=>`<tr><td><b>${e(s.name)}</b></td><td>${e(s.code)}</td><td>${e(s.group)}</td><td><button class="danger" onclick="delStudent(${s.id})">Устгах</button></td></tr>`).join("")}</table>`:`<div class="empty">Оюутан бүртгэгдээгүй байна.</div>`}
+function renderAtt(){attTable.innerHTML=db.students.length?`<table><tr><th>Оюутан</th><th>Төлөв</th></tr>${db.students.map(s=>{let x=db.attendance.find(a=>a.studentId===s.id&&a.date===attDate.value&&a.lesson===attLesson.value.trim()),v=x?.status||"";return `<tr><td>${e(s.name)}</td><td><button class="pill green" onclick="att(${s.id},'present')">Ирсэн</button> <button class="pill yellow" onclick="att(${s.id},'late')">Хоцорсон</button> <button class="pill red" onclick="att(${s.id},'absent')">Тасалсан</button> ${v}</td></tr>`}).join("")}</table>`:`<div class="empty">Эхлээд оюутан нэмнэ үү.</div>`}
+function renderAct(){actTable.innerHTML=db.students.length?`<table><tr><th>Оюутан</th><th>Идэвхийн оноо</th></tr>${db.students.map(s=>{let x=db.activity.find(a=>a.studentId===s.id&&a.date===actDate.value&&a.lesson===actLesson.value.trim());return `<tr><td>${e(s.name)}</td><td><input type="number" min="0" value="${x?.points||0}" onchange="act(${s.id},this.value)" class="input" style="width:100px;min-width:0"></td></tr>`}).join("")}</table>`:`<div class="empty">Оюутан алга.</div>`}
+function renderAs(){asTable.innerHTML=db.assignments.length?db.assignments.map(a=>`<div style="margin-bottom:25px"><h2>${e(a.title)}</h2><table><tr><th>Оюутан</th><th>Оноо / ${a.max}</th></tr>${db.students.map(s=>`<tr><td>${e(s.name)}</td><td><input class="input" style="width:100px;min-width:0" type="number" min="0" max="${a.max}" value="${a.scores[s.id]??""}" onchange="score(${a.id},${s.id},this.value)"></td></tr>`).join("")}</table></div>`).join(""):`<div class="empty">Бие даалт үүсгээгүй байна.</div>`}
+function renderReport(){report.innerHTML=db.students.length?`<table><tr><th>Оюутан</th><th>Ирц</th><th>Идэвх</th><th>Бие даалт</th></tr>${db.students.map(s=>{let a=db.attendance.filter(x=>x.studentId===s.id),ap=a.length?Math.round(a.filter(x=>x.status==="present").length/a.length*100):0,ac=db.activity.filter(x=>x.studentId===s.id).reduce((z,x)=>z+x.points,0),sc=0,m=0;db.assignments.forEach(x=>{if(x.scores[s.id]!==undefined&&x.scores[s.id]!==""){sc+=+x.scores[s.id];m+=x.max}});return `<tr><td><b>${e(s.name)}</b></td><td>${ap}%</td><td>${ac}</td><td>${m?Math.round(sc/m*100):0}%</td></tr>`}).join("")}</table>`:`<div class="empty">Мэдээлэл алга.</div>`}
+function dashboard(){dStudents.textContent=db.students.length;let a=db.attendance.filter(x=>x.date===today),p=a.filter(x=>x.status==="present").length;dAttendance.textContent=a.length?Math.round(p/a.length*100)+"%":"0%";let vals=db.activity.map(x=>+x.points||0);dActivity.textContent=vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0;dAssignments.textContent=db.assignments.length;let total=0,sc=0;db.assignments.forEach(a=>db.students.forEach(s=>{total+=a.max;if(a.scores[s.id]!==undefined&&a.scores[s.id]!=="")sc+=+a.scores[s.id]}));let pct=total?Math.round(sc/total*100):0;assignPct.textContent=pct+"%";assignBar.style.width=pct+"%";let days=[];for(let i=6;i>=0;i--){let d=new Date(Date.now()-i*864e5).toISOString().slice(0,10),r=db.attendance.filter(x=>x.date===d),v=r.length?Math.round(r.filter(x=>x.status==="present").length/r.length*100):0;days.push([d.slice(5),v])}chart.innerHTML=days.map(x=>`<div style="height:${Math.max(8,x[1])}%;"><small>${x[0]}<br>${x[1]}%</small></div>`).join("")}
+function renderAll(){dashboard();renderStudents();renderAtt();renderAct();renderAs();renderReport()}
+function e(x){return String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function csv(){let rows=[["Оюутан","Ирц %","Идэвх","Бие даалт %"]];db.students.forEach(s=>{let a=db.attendance.filter(x=>x.studentId===s.id),p=a.length?Math.round(a.filter(x=>x.status==="present").length/a.length*100):0,ac=db.activity.filter(x=>x.studentId===s.id).reduce((z,x)=>z+x.points,0),sc=0,m=0;db.assignments.forEach(x=>{if(x.scores[s.id]!==undefined&&x.scores[s.id]!==""){sc+=+x.scores[s.id];m+=x.max}});rows.push([s.name,p,ac,m?Math.round(sc/m*100):0])});let c="\ufeff"+rows.map(r=>r.join(",")).join("\\n"),a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:"text/csv;charset=utf-8"}));a.download="studenttrack_report.csv";a.click()}
+renderAll();
+</script>
+</body></html>
